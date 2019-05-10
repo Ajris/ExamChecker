@@ -9,12 +9,9 @@ def angle_cos(p0, p1, p2):
 
 def find_squares(read_from, save_to):
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
-    # img = cv.GaussianBlur(img, (5, 5), 0)
-    # retval, img = cv.threshold(img, 0, 255, cv.THRESH_BINARY)
-    # el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
-    # img = cv.dilate(img, el, iterations=1)
-    # cv.imshow('a', img)
-    # cv.waitKey()
+    retval, img = cv.threshold(img, 0, 255, cv.THRESH_BINARY)
+    el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
+    img = cv.dilate(img, el, iterations=1)
     squares = []
     for gray in cv.split(img):
         for thrs in range(0, 255, 26):
