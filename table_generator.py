@@ -14,7 +14,7 @@ class AnswerSheetGenerator(FPDF):
     def get_x(self, width):
         return (210 - self.box_h_space*(width + 2))/2
 
-    def add_row(self, width):
+    def add_row(self, width, random_answer = False):
         black = random.randrange(0, width)
         for i in range(width):
             self.set_x(self.get_x(width) + self.box_h_space*(i + 1.5) - self.box_width/2)
@@ -23,7 +23,7 @@ class AnswerSheetGenerator(FPDF):
             else:
                 self.cell(self.box_width, self.box_width, '', border = 1)
 
-    def generate_table(self, width, height):
+    def generate_table(self, width, height, random_answer = False):
         for i in range(width):
             self.set_x(self.get_x(width) + self.box_h_space*(i + 1.5) - self.box_width/2)
             self.cell(self.box_width, self.box_width, chr(i + ord('A')), border = 0)
@@ -31,11 +31,17 @@ class AnswerSheetGenerator(FPDF):
             self.set_y(i*10 + 30)
             self.set_x(self.get_x(width))
             self.cell(self.box_width, self.box_width, str(i + 1))
-            self.add_row(width)
+            self.add_row(width, random_answer)
 
 def generate_table(name, width, height):
     pdf = AnswerSheetGenerator() 
     pdf.generate_table(width, height)
     pdf.output(name)
 
+def random_answer_table(name, width, height):
+    pdf = AnswerSheetGenerator() 
+    pdf.generate_table(width, height, True)
+    pdf.output(name)
+
 generate_table('table.pdf', 4, 25)
+random_answer_table('random.pdf', 4, 25)
