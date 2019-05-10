@@ -39,14 +39,14 @@ class AnswerSheetGenerator(FPDF):
             x_pos = self.get_x(width) + self.box_h_space * (i + 1.5) - self.box_width / 2
             self.set_x(x_pos)
             self.cell(self.box_width, self.box_width, chr(i + ord('A')), border=0)
-            self.answers_x_pos.append(x_pos - 22.5)
+            self.answers_x_pos.append(x_pos - 22.5 + self.box_width/2)
         for i in range(height):
             y_pos = i * self.box_v_space + 30
             self.set_y(y_pos)
             self.set_x(self.get_x(width))
             self.cell(self.box_width, self.box_width, str(i + 1))
             self.add_row(width, random_answer)
-            self.answers_y_pos.append(y_pos - 22.5)
+            self.answers_y_pos.append(y_pos - 22.5 + self.box_width/2)
 
     def generate_reference_rectangles(self):
         self.rect(15, 15, 15, 15)
@@ -76,5 +76,4 @@ def random_answer_table(name, width, height):
 #  pdf = AnswerSheetGenerator(width, height, True)
 #  pdf.output(name)
 
-generate_table('table.pdf', 4, 25)
 #  random_answer_table('random.pdf', 4, 25)
