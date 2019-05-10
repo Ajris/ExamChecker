@@ -58,6 +58,3 @@ def generate_table(name, width, height):
 def random_answer_table(name, width, height):
     pdf = AnswerSheetGenerator(width, height, True) 
     pdf.output(name)
-
-generate_table('table.pdf', 4, 25)
-random_answer_table('random.pdf', 4, 25)
