@@ -1,23 +1,27 @@
 import table_generator as tge
 import pdf_to_jpg
 import detect_square
+from PIL import Image
 
-
-print("TEST GENERATED IN COMPUTER")
+print("TEST GENERATED")
 WIDTH = 4
 HEIGHT = 25
-PDF_NAME = 'data/pdf/Generated-Document.pdf'
-CONVERTED_PDF = 'data/jpg/Generated-Created-Document.jpg'
-OUTPUT = 'data/out/Output-Generated.jpg'
+GENERATED_PDF = 'data/pdf/Generated-Document.pdf'
+GENERATED_JPG = 'data/jpg/Generated-Created-Document.jpg'
+GENERATED_OUTPUT = 'data/out/Output-Generated.jpg'
 
-tge.generate_table(PDF_NAME, WIDTH, HEIGHT)
-pdf_to_jpg.convert(PDF_NAME, CONVERTED_PDF)
-detect_square.find_squares(CONVERTED_PDF, OUTPUT)
+tge.generate_table(GENERATED_PDF, WIDTH, HEIGHT)
+pdf_to_jpg.convert(GENERATED_PDF, GENERATED_JPG)
+detect_square.find_squares(GENERATED_JPG, GENERATED_OUTPUT)
 
-print("TEST OWN GENERATED")
-PDF_NAME = 'data/pdf/Scanned-Document.pdf'
-CONVERTED_PDF = 'data/jpg/Converted-Scanned-Document.jpg'
-OUTPUT = 'data/out/Output-Scanned.jpg'
+Image.open(GENERATED_OUTPUT).show()
 
-pdf_to_jpg.convert(PDF_NAME, CONVERTED_PDF)
-detect_square.find_squares(CONVERTED_PDF, OUTPUT)
+print("TEST SCANNED")
+SCANNED_PDF = 'data/pdf/Scanned-Document.pdf'
+SCANNED_JPG = 'data/jpg/Converted-Scanned-Document.jpg'
+SCANNED_OUTPUT = 'data/out/Output-Scanned.jpg'
+
+pdf_to_jpg.convert(SCANNED_PDF, SCANNED_JPG)
+detect_square.find_squares(SCANNED_JPG, SCANNED_OUTPUT)
+
+Image.open(SCANNED_OUTPUT).show()
