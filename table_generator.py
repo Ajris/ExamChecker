@@ -6,11 +6,18 @@ class AnswerSheetGenerator(FPDF):
     box_width = 6
     box_h_space = 10
     box_v_space = 10
-
-    def __init__(self):
+    answers = dict() 
+    answers_pos = dict()
+    width = None
+    height = None
+    def __init__(self, width, height, random_answer = False):
         FPDF.__init__(self, unit = 'mm', format='A4')
         self.add_page()
         self.set_font('Arial', 'B', 16)
+        self.width = width
+        self.height = height
+        self.generate_table(width, height, random_answer)
+
     def get_x(self, width):
         return (210 - self.box_h_space*(width + 2))/2
 
@@ -24,24 +31,34 @@ class AnswerSheetGenerator(FPDF):
                 self.cell(self.box_width, self.box_width, '', border = 1)
 
     def generate_table(self, width, height, random_answer = False):
+        self.set_y(20)
         for i in range(width):
             self.set_x(self.get_x(width) + self.box_h_space*(i + 1.5) - self.box_width/2)
             self.cell(self.box_width, self.box_width, chr(i + ord('A')), border = 0)
         for i in range(height):
-            self.set_y(i*10 + 30)
+            self.set_y(i*self.box_v_space + 30)
             self.set_x(self.get_x(width))
             self.cell(self.box_width, self.box_width, str(i + 1))
             self.add_row(width, random_answer)
+    
+    #  def get_answer_positions(self):
+        
+    #  def get_answer_positions(self
+    #  def set_answer(self, question, answer):
+        #  self.answers.update(question : answer)
+
+    def get_answer(self, question, answer):
+        return self.answers.get(question)
+
 
 def generate_table(name, width, height):
-    pdf = AnswerSheetGenerator() 
-    pdf.generate_table(width, height)
+    pdf = AnswerSheetGenerator(width, height) 
     pdf.output(name)
 
 def random_answer_table(name, width, height):
-    pdf = AnswerSheetGenerator() 
-    pdf.generate_table(width, height, True)
+    pdf = AnswerSheetGenerator(width, height, True) 
     pdf.output(name)
 
 generate_table('table.pdf', 4, 25)
 random_answer_table('random.pdf', 4, 25)
+
