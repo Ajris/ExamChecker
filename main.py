@@ -31,7 +31,9 @@ RANDOM_PDF = 'data/pdf/Random-Document.pdf'
 RANDOM_JPG = 'data/jpg/Converted-Random-Document.jpg'
 RANDOM_OUTPUT = 'data/out/Output-Random.jpg'
 
+x, y = tge.random_answer_table(RANDOM_PDF, 4, 25)
+
 pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
-detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT)
+detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT,x,y)
 
 Image.open(RANDOM_OUTPUT).show()

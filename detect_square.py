@@ -7,7 +7,7 @@ def angle_cos(p0, p1, p2):
     return abs(np.dot(d1, d2) / np.sqrt(np.dot(d1, d1) * np.dot(d2, d2)))
 
 
-def find_squares(read_from, save_to):
+def find_squares(read_from, save_to, x, y):
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
     retval, img = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
     el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
@@ -29,11 +29,25 @@ def find_squares(read_from, save_to):
                     cnt = cnt.reshape(-1, 2)
                     max_cos = np.max([angle_cos(cnt[i], cnt[(i + 1) % 4], cnt[(i + 2) % 4]) for i in range(4)])
                     if max_cos < 0.1:
-                        m = np.arange(2).reshape(1,2)
+                        m = np.arange(2).reshape(1, 2)
                         m[0] = [(cnt[0][0] + cnt[2][0]) / 2, (cnt[0][1] + cnt[2][1]) / 2]
                         middles.append(m)
                         squares.append(cnt)
     nowe = cv.imread(read_from, cv.IMREAD_ANYCOLOR)
     cv.drawContours(nowe, squares, -1, (0, 255, 0), 3)
     cv.drawContours(nowe, middles, -2, (255, 255, 0), 3)
+
+    # res = []
+    # for a in middles:
+    #     if a not in res:
+    #         print(a)
+    #         print("A")
+    #         res = np.append(res, a)
+    # print(res)
+    #88 88 737 88
+    #
+    for i in x:
+        for j in y:
+            cv.circle(nowe, (int(i*650/180) + middles[1][0][0]+35, int(j*650/180) + middles[61][0][1]+15), 4, (0, 0, 255), 3)
+
     cv.imwrite(save_to, nowe)
