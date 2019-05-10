@@ -1,43 +1,42 @@
-import pdf, random
-
-#  def generate_table(height, width):
-    #  table = """<table border="1" cellpadding="5px">"""
-
-    #  for i in range(height):
-        #  table += generate_row(width)
-    #  table += "</table>"
-    #  return table
-    
-#  def generate_row(width):
-    #  row = "<tr>"
-    #  for i in range(width):
-        #  row += "<td width=100> <table> <tr> <td width=30> </td> </tr> </table> </td>"
-    #  row += "</tr>"
-    #  return row
-#  table = generate_table(1, 1)
-#  print(table)
-#  pdf.simple_table_html(generate_table(1, 1))
+import random
 
 from fpdf import FPDF
-def add_row(pdf, width):
-    x = (210 - 20*width - 10)/2
-    black = random.randrange(0, width)
-    for i in range(width):
-        pdf.set_x(x + 20*i + 10)
-        if i == black:
-            pdf.cell(10, 10, '', fill=True, border = 1)
-        else:
-            pdf.cell(10, 10, '', border = 1)
+
+class AnswerSheetGenerator(FPDF):
+    box_width = 6
+    box_h_space = 10
+    box_v_space = 10
+
+    def __init__(self):
+        FPDF.__init__(self, unit = 'mm', format='A4')
+        self.add_page()
+        self.set_font('Arial', 'B', 16)
+    def get_x(self, width):
+        return (210 - self.box_h_space*(width + 2))/2
+
+    def add_row(self, width):
+        black = random.randrange(0, width)
+        for i in range(width):
+            self.set_x(self.get_x(width) + self.box_h_space*(i + 1) + 2)
+            if i == black:
+                self.cell(self.box_width, self.box_width, '', fill=True, border = 1)
+            else:
+                self.cell(self.box_width, self.box_width, '', border = 1)
+
+    def generate_table(self, width, height):
+        for i in range(width):
+            self.set_x(self.get_x(width) + self.box_h_space*(i + 1) + 2)
+            self.cell(self.box_width, self.box_width, chr(i + ord('A')), border = 0)
+        for i in range(height):
+            self.set_y(i*10 + 30)
+            self.set_x(self.get_x(width))
+            self.cell(self.box_width, self.box_width, str(i + 1))
+            self.add_row(width)
 
 
-def generate_table(pdf, width, height):
-    for i in range(height):
-        pdf.set_y(i*20 + 30)
-        add_row(pdf, width)
-pdf = FPDF(unit = 'mm', format='A4') 
-pdf.set_font('Arial', 'B', 16)
-pdf.add_page()
+pdf = AnswerSheetGenerator() 
 #  add_row(pdf, 4)
-generate_table(pdf, 4, 7)
+pdf.generate_table(4, 25)
+#  pdf.line(210/2, 0, 210/2, 297)
 #  pdf.cell(10, 10, 'a', border = 1)
 pdf.output('table.pdf')
