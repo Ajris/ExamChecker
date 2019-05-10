@@ -7,6 +7,8 @@ __pycache__/
 
 # C extensions
 *.so
+simple_table_html.pdf
+out.jpg
 .idea
 # Distribution / packaging
 .Python
