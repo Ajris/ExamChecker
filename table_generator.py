@@ -61,4 +61,3 @@ def random_answer_table(name, width, height):
 
 generate_table('table.pdf', 4, 25)
 random_answer_table('random.pdf', 4, 25)
-
