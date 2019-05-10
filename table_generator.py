@@ -38,4 +38,3 @@ def generate_table(name, width, height):
     pdf.generate_table(width, height)
     pdf.output(name)
 
-generate_table('table.pdf', 4, 25)
