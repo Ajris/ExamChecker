@@ -3,10 +3,12 @@ import cv2 as cv
 
 def find_squares(read_from, save_to):
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
-    img = cv.GaussianBlur(img, (5, 5), 0)
-    retval, img = cv.threshold(img, 50, 255, cv.THRESH_BINARY)
-    el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
-    img = cv.dilate(img, el, iterations=1)
+    # img = cv.GaussianBlur(img, (5, 5), 0)
+    # retval, img = cv.threshold(img, 0, 255, cv.THRESH_BINARY)
+    # el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
+    # img = cv.dilate(img, el, iterations=1)
+    cv.imshow('a', img)
+    cv.waitKey()
     squares = []
     contours, _hierarchy = cv.findContours(img, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
     for cnt in contours:
