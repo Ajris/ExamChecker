@@ -54,14 +54,14 @@ def update_questions():
 
 
 def generate_pdf():
-    generate_table("output.pdf", answers_number.get(), questions_number.get())
+    generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
 
 
 def check_answers():
-    RANDOM_PDF = 'data/pdf/test1.pdf'
-    RANDOM_JPG = 'data/jpg/Document.jpg'
-    RANDOM_OUTPUT = 'data/out/Output-Random.jpg'
-    x, y = generate_table("output.pdf", answers_number.get(), questions_number.get())
+    RANDOM_PDF = '.data/pdf/test1.pdf'
+    RANDOM_JPG = '.data/jpg/Document1.jpg'
+    RANDOM_OUTPUT = '.data/out/Output-Random.jpg'
+    x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
     answers = detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT, x, y)
     pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
     print(len(question_values))
