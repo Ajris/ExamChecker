@@ -34,6 +34,8 @@ class AnswerSheetGenerator(FPDF):
                 self.cell(self.box_width, self.box_width, '', border=1)
 
     def generate_table(self, width, height, random_answer=False):
+        self.answers_x_pos = []
+        self.answers_y_pos = []
         self.set_y(20)
         for i in range(width):
             x_pos = self.get_x(width) + self.box_h_space * (i + 1.5) - self.box_width / 2
@@ -63,7 +65,7 @@ class AnswerSheetGenerator(FPDF):
 def generate_table(name, width, height):
     pdf = AnswerSheetGenerator(width, height)
     pdf.output(name)
-
+    return pdf.answers_x_pos, pdf.answers_y_pos
 
 def random_answer_table(name, width, height):
     pdf = AnswerSheetGenerator(width, height, True)

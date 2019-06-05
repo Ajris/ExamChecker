@@ -80,7 +80,7 @@ def find_squares(read_from, save_to, x, y):
                 cv.circle(nowe, pos, 4, (0, 0, 255), 3)
                 if answers[l] == -1:
                     answers[l] = k
-    print(answers) 
             #  cv.imshow("cropped", cropped)
             #  cv.waitKey(1000)
     cv.imwrite(save_to, nowe)
+    return answers
