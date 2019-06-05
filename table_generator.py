@@ -28,25 +28,29 @@ class AnswerSheetGenerator(FPDF):
         black = random.randrange(0, width)
         for i in range(width):
             self.set_x(self.get_x(width) + self.box_h_space * (i + 1.5) - self.box_width / 2)
-            if i == black:
+            if random_answer and i == black:
                 self.cell(self.box_width, self.box_width, '', fill=True, border=1)
             else:
                 self.cell(self.box_width, self.box_width, '', border=1)
 
     def generate_table(self, width, height, random_answer=False):
+        self.answers_x_pos = []
+        self.answers_y_pos = []
         self.set_y(20)
         for i in range(width):
             x_pos = self.get_x(width) + self.box_h_space * (i + 1.5) - self.box_width / 2
             self.set_x(x_pos)
             self.cell(self.box_width, self.box_width, chr(i + ord('A')), border=0)
-            self.answers_x_pos.append(x_pos - 22.5 + self.box_width/2)
+            #  self.answers_x_pos.append(x_pos - 22.5 + self.box_width/2)
+            self.answers_x_pos.append(x_pos - 22.5)
         for i in range(height):
             y_pos = i * self.box_v_space + 30
             self.set_y(y_pos)
             self.set_x(self.get_x(width))
             self.cell(self.box_width, self.box_width, str(i + 1))
             self.add_row(width, random_answer)
-            self.answers_y_pos.append(y_pos - 22.5 + self.box_width/2)
+            self.answers_y_pos.append(y_pos - 22.5)
+            #  self.answers_y_pos.append(y_pos - 22.5 + self.box_width/2)
 
     def generate_reference_rectangles(self):
         self.rect(15, 15, 15, 15)
@@ -61,7 +65,7 @@ class AnswerSheetGenerator(FPDF):
 def generate_table(name, width, height):
     pdf = AnswerSheetGenerator(width, height)
     pdf.output(name)
-
+    return pdf.answers_x_pos, pdf.answers_y_pos
 
 def random_answer_table(name, width, height):
     pdf = AnswerSheetGenerator(width, height, True)
@@ -71,9 +75,9 @@ def random_answer_table(name, width, height):
     return pdf.answers_x_pos, pdf.answers_y_pos
 
 
-
+if __name__ == '__main__':
 #  def random_answer_table(name, width, height):
 #  pdf = AnswerSheetGenerator(width, height, True)
 #  pdf.output(name)
 
-#  random_answer_table('random.pdf', 4, 25)
+    generate_table('table.pdf', 4, 25)
