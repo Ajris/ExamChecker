@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter.ttk import *
-from table_generator import generate_table
-import pdf_to_jpg
-import detect_square
+from table.generator.table_generator import generate_table
+from gui import pdf_to_jpg
+from table.checker import detect_square
 from PIL import Image
 
 window = Tk()
@@ -58,7 +58,7 @@ def generate_pdf():
 
 
 def check_answers():
-    RANDOM_PDF = 'data/pdf/chuj.pdf'
+    RANDOM_PDF = 'data/pdf/test1.pdf'
     RANDOM_JPG = 'data/jpg/Document.jpg'
     RANDOM_OUTPUT = 'data/out/Output-Random.jpg'
     x, y = generate_table("output.pdf", answers_number.get(), questions_number.get())
