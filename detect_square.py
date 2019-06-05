@@ -48,6 +48,7 @@ def find_squares(read_from, save_to, x, y):
                             middles4[1].append(y_mid)
 
                         squares.append(cnt)
+
     nowe = cv.imread(read_from, cv.IMREAD_ANYCOLOR)
     top_left = sum(middles1[0])/len(middles1[0]) , sum(middles1[1])/len(middles1[1])
     top_right = sum(middles2[0])/len(middles2[0]) , sum(middles2[1])/len(middles2[1])
@@ -66,9 +67,20 @@ def find_squares(read_from, save_to, x, y):
     #88 88 737 88
     #
     scale = (top_right[0] - top_left[0])/165.0
-    for i in x:
-        for j in y:
+    answers = [ -1 for i in range(len(y))]
+    for k in range(len(x)):
+        i = x[k]
+        for l in range(len(y)):
+            j = y[l]
             pos = int(i*scale + np.floor(top_left[0])), int(j*scale +  np.floor(top_left[1]))
-            cv.circle(nowe, pos, 4, (0, 0, 255), 3)
-
+            cropped = nowe[pos[1]:pos[1] + int(7*scale), pos[0] : pos[0] + int(7*scale)] 
+            avg_color_per_row = np.average(cropped, axis=0)
+            avg_colors = np.average(avg_color_per_row, axis=0)
+            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 400:
+                cv.circle(nowe, pos, 4, (0, 0, 255), 3)
+                if answers[l] == -1:
+                    answers[l] = k
+    print(answers) 
+            #  cv.imshow("cropped", cropped)
+            #  cv.waitKey(1000)
     cv.imwrite(save_to, nowe)

@@ -27,11 +27,11 @@ from PIL import Image
 #  Image.open(SCANNED_OUTPUT).show()
 
 print("TEST RANDOM")
-RANDOM_PDF = 'data/pdf/Random-Document.pdf'
-RANDOM_JPG = 'data/jpg/Converted-Random-Document.jpg'
+RANDOM_PDF = 'data/pdf/chuj.pdf'
+RANDOM_JPG = 'data/jpg/Document.jpg'
 RANDOM_OUTPUT = 'data/out/Output-Random.jpg'
 
-x, y = tge.random_answer_table(RANDOM_PDF, 4, 25)
+x, y = tge.random_answer_table('data/pdf/whatever', 4, 25)
 print(x, y)
 pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
 detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT,x,y)
