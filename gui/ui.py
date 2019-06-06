@@ -1,15 +1,12 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter.ttk import *
-import sys
+
+from PIL import Image
 
 from gui import pdf_to_jpg
 from table.checker import detect_square
 from table.generator.table_generator import generate_table
-
-sys.path.insert(0, '/home/charon/Documents/ExamChecker/table/generator')
-sys.path.insert(0, '/home/charon/Documents/ExamChecker/table')
-from PIL import Image
 
 questions = []
 question_values = []
@@ -105,10 +102,9 @@ def check_answers():
     f = open(answer_file, 'r')
     contents = f.readlines()
     for line in contents:
-        for i in range(len(line)-1):
+        for i in range(len(line) - 1):
             if line[i] == str(answers[i]):
                 answered = answered + 1
-
 
     Label(window, text="CORRECT: " + str(answered) + "/25").grid(column=1, row=4)
 
