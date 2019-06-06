@@ -77,6 +77,5 @@ def find_squares(read_from, save_to, x, y, answer_file):
             if good_answers[l] == k:
                 cv.circle(nowe, pos, 4, (0, 255, 0), 3)
 
-
     cv.imwrite(save_to, nowe)
     return answers

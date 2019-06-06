@@ -1,3 +1,4 @@
+import os
 from tkinter import *
 from tkinter import filedialog
 from tkinter.ttk import *
@@ -93,22 +94,25 @@ def generate_pdf():
 def check_answers():
     global answered
     RANDOM_PDF = pdf_file
-    RANDOM_JPG = '.data/jpg/Document1.jpg'
-    RANDOM_OUTPUT = '.data/out/Output-Random.jpg'
-    x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
+    RANDOM_JPG = pdf_file[:-4] + '.jpg'
+    RANDOM_OUTPUT = pdf_file[:-4] + 'RES'
     pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
-    answers = detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT, x, y, answer_file)
+    x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
 
-    f = open(answer_file, 'r')
-    contents = f.readlines()
-    for line in contents:
-        for i in range(len(line) - 1):
-            if line[i] == str(answers[i]):
-                answered = answered + 1
-
-    Label(window, text="CORRECT: " + str(answered) + "/25").grid(column=1, row=4)
-
-    Image.open(RANDOM_OUTPUT).show()
+    i = 0
+    for r, d, fa in os.walk(pdf_file[:-4]):
+        for file in fa:
+            if not os.path.exists(RANDOM_OUTPUT + '/'):
+                os.mkdir(RANDOM_OUTPUT + '/')
+            curr = RANDOM_OUTPUT + '/' + str(file)
+            answers = detect_square.find_squares(pdf_file[:-4] + '/' + str(file), curr, x, y, answer_file)
+            i = i + 1
+            f = open(answer_file, 'r')
+            contents = f.readlines()
+            for line in contents:
+                for i in range(len(line) - 1):
+                    if line[i] == str(answers[i]):
+                        answered = answered + 1
 
 
 pdf_file = ''
