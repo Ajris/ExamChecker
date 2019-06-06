@@ -112,7 +112,7 @@ pdf_file = ''
 
 window = Tk()
 window.title("Exam Checker")
-window.geometry('500x900')
+window.geometry('700x900')
 
 questions_number = IntVar()
 questions_number.set(25)
