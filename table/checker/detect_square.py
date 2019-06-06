@@ -7,7 +7,7 @@ def angle_cos(p0, p1, p2):
     return abs(np.dot(d1, d2) / np.sqrt(np.dot(d1, d1) * np.dot(d2, d2)))
 
 
-def find_squares(read_from, save_to, x, y):
+def find_squares(read_from, save_to, x, y, answer_file):
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
     retval, img = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
     el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
@@ -69,7 +69,7 @@ def find_squares(read_from, save_to, x, y):
                 cv.circle(nowe, pos, 4, (0, 0, 255), 3)
                 if answers[l] == -1:
                     answers[l] = k
-            #  cv.imshow("cropped", cropped)
-            #  cv.waitKey(1000)
+
+
     cv.imwrite(save_to, nowe)
     return answers

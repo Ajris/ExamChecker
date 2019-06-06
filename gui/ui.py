@@ -10,6 +10,7 @@ from PIL import Image
 questions = []
 question_values = []
 question_nums = []
+answered = 0
 
 
 def clear_without_menu():
@@ -39,6 +40,7 @@ def generate_function():
 
 def check_function():
     global pdf_file
+    global answer_file
     clear_without_menu()
     pdf_file = filedialog.askopenfilename(initialdir="./.data/pdf", title="Select file",
                                           filetypes=(("pdf file", "*.pdf"), ("all files", "*.*")))
@@ -88,27 +90,29 @@ def generate_pdf():
 
 
 def check_answers():
+    global answered
     RANDOM_PDF = pdf_file
     RANDOM_JPG = '.data/jpg/Document1.jpg'
     RANDOM_OUTPUT = '.data/out/Output-Random.jpg'
     x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
     pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
-    answers = detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT, x, y)
-    print(len(question_values))
-    if len(answers) == len(question_values):
-        correct = 0
-        for i in range(len(answers)):
-            print(str(answers[i]) + " " + str(question_values[i].get()))
-            if answers[i] == question_values[i].get():
-                correct += 1
-        print(correct)
-    else:
-        print("Wrong number of questions")
+    answers = detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT, x, y, answer_file)
+
+    f = open(answer_file, 'r')
+    contents = f.readlines()
+    for line in contents:
+        for i in range(len(line)-1):
+            if line[i] == str(answers[i]):
+                answered = answered + 1
+
+
+    Label(window, text="CORRECT: " + str(answered) + "/25").grid(column=1, row=4)
 
     Image.open(RANDOM_OUTPUT).show()
 
 
 pdf_file = ''
+answer_file = ''
 
 window = Tk()
 window.title("Exam Checker")
