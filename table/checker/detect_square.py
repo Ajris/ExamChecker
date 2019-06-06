@@ -9,11 +9,14 @@ def angle_cos(p0, p1, p2):
 
 def find_squares(read_from, save_to, x, y, answer_file):
     f = open(answer_file, 'r')
+    contents = f.readline()
+    contents = f.readline()
     line = f.readline()
     good_answers = []
     for i in range(len(line) - 1):
         good_answers.append(ord(line[i]) - 48)
     print(good_answers)
+    f.close()
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
     retval, img = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
     el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
@@ -63,6 +66,9 @@ def find_squares(read_from, save_to, x, y, answer_file):
     cv.drawContours(nowe, squares, -1, (0, 255, 0), 3)
     scale = (top_right[0] - top_left[0]) / 165.0
     answers = [-1 for i in range(len(y))]
+    print("len")
+    print(len(x))
+    print(len(y))
     for k in range(len(x)):
         i = x[k]
         for l in range(len(y)):

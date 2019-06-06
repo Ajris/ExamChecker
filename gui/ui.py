@@ -97,20 +97,32 @@ def check_answers():
     RANDOM_PDF = pdf_file
     RANDOM_JPG = '.data/jpg/Document1.jpg'
     RANDOM_OUTPUT = '.data/out/Output-Random.jpg'
-    x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
+    
+    f = open(answer_file, 'r')
+
+    ans_num = int(f.readline())
+    qu_num = int(f.readline())
+    f.close()
+    print("ans:")
+    print(ans_num)
+    print(qu_num)
+    x, y = generate_table(None, ans_num, qu_num)
     pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
     answers = detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT, x, y, answer_file)
+    
+    
 
     f = open(answer_file, 'r')
-    contents = f.readlines()
-    for line in contents:
-        for i in range(len(line)-1):
-            if line[i] == str(answers[i]):
-                answered = answered + 1
-
+    contents = f.readline()
+    contents = f.readline()
+    contents = f.readline()
+    for i in range(qu_num) :
+        if contents[i] == str(answers[i]):
+            answered = answered + 1
+    f.close()
 
     Label(window, text="CORRECT: " + str(answered) + "/25").grid(column=1, row=4)
-
+    
     Image.open(RANDOM_OUTPUT).show()
 
 
