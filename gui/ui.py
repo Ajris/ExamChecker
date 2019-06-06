@@ -1,6 +1,8 @@
 from tkinter import *
+from tkinter import filedialog
 from tkinter.ttk import *
 from table.generator.table_generator import generate_table
+
 from gui import pdf_to_jpg
 from table.checker import detect_square
 from PIL import Image
@@ -37,11 +39,11 @@ def generate_function():
 
 def check_function():
     clear_without_menu()
-    Label(window, text="Username").grid(row=10)  # this is placed in 0 0
-    Entry(window).grid(row=0, column=1)
-
+    window.filename = filedialog.askopenfilename(initialdir="./.data/pdf", title="Select file",
+                                                 filetypes=(("pdf file", "*.pdf"), ("all files", "*.*")))
+    Label(window, text="PREPARED PDF: " + window.filename).grid(column=1, row=1)
     btn = Button(window, text="Check answers", command=check_answers)
-    btn.grid(column=2, row=1)
+    btn.grid(column=1, row=2)
 
 
 def add_radiobuttons(question, answers):
@@ -80,12 +82,12 @@ def generate_pdf():
 
 
 def check_answers():
-    RANDOM_PDF = '.data/pdf/test1.pdf'
+    RANDOM_PDF = window.filename
     RANDOM_JPG = '.data/jpg/Document1.jpg'
     RANDOM_OUTPUT = '.data/out/Output-Random.jpg'
     x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
-    answers = detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT, x, y)
     pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
+    answers = detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT, x, y)
     print(len(question_values))
     if len(answers) == len(question_values):
         correct = 0
