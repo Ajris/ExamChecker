@@ -38,12 +38,18 @@ def generate_function():
 
 
 def check_function():
+    global pdf_file
     clear_without_menu()
-    window.filename = filedialog.askopenfilename(initialdir="./.data/pdf", title="Select file",
-                                                 filetypes=(("pdf file", "*.pdf"), ("all files", "*.*")))
-    Label(window, text="PREPARED PDF: " + window.filename).grid(column=1, row=1)
+    pdf_file = filedialog.askopenfilename(initialdir="./.data/pdf", title="Select file",
+                                          filetypes=(("pdf file", "*.pdf"), ("all files", "*.*")))
+    answer_file = filedialog.askopenfilename(initialdir="./.data/ans", title="Select file",
+                                             filetypes=(("txt file", "*.txt"), ("all files", "*.*")))
+    Label(window, text="PREPARED PDF: " + pdf_file).grid(column=1, row=1)
+
+    Label(window, text="PREPARED ANSWER FILE: " + answer_file).grid(column=1, row=2)
+
     btn = Button(window, text="Check answers", command=check_answers)
-    btn.grid(column=1, row=2)
+    btn.grid(column=1, row=3)
 
 
 def add_radiobuttons(question, answers):
@@ -78,11 +84,11 @@ def update_questions():
 
 
 def generate_pdf():
-    generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
+    generate_table("./.data/pdf/output.pdf", answers_number.get(), questions_number.get())
 
 
 def check_answers():
-    RANDOM_PDF = window.filename
+    RANDOM_PDF = pdf_file
     RANDOM_JPG = '.data/jpg/Document1.jpg'
     RANDOM_OUTPUT = '.data/out/Output-Random.jpg'
     x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
@@ -102,9 +108,11 @@ def check_answers():
     Image.open(RANDOM_OUTPUT).show()
 
 
+pdf_file = ''
+
 window = Tk()
 window.title("Exam Checker")
-window.geometry('500x900')
+window.geometry('700x900')
 
 questions_number = IntVar()
 questions_number.set(25)
