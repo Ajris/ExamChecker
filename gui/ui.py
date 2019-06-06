@@ -42,9 +42,14 @@ def check_function():
     clear_without_menu()
     pdf_file = filedialog.askopenfilename(initialdir="./.data/pdf", title="Select file",
                                           filetypes=(("pdf file", "*.pdf"), ("all files", "*.*")))
+    answer_file = filedialog.askopenfilename(initialdir="./.data/ans", title="Select file",
+                                             filetypes=(("txt file", "*.txt"), ("all files", "*.*")))
     Label(window, text="PREPARED PDF: " + pdf_file).grid(column=1, row=1)
+
+    Label(window, text="PREPARED ANSWER FILE: " + answer_file).grid(column=1, row=2)
+
     btn = Button(window, text="Check answers", command=check_answers)
-    btn.grid(column=1, row=2)
+    btn.grid(column=1, row=3)
 
 
 def add_radiobuttons(question, answers):
@@ -79,7 +84,7 @@ def update_questions():
 
 
 def generate_pdf():
-    generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
+    generate_table("./.data/pdf/output.pdf", answers_number.get(), questions_number.get())
 
 
 def check_answers():
