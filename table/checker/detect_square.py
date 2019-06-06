@@ -7,9 +7,18 @@ def angle_cos(p0, p1, p2):
     return abs(np.dot(d1, d2) / np.sqrt(np.dot(d1, d1) * np.dot(d2, d2)))
 
 
-def find_squares(read_from, save_to, x, y):
+def find_squares(read_from, save_to, x, y, answer_file):
+    f = open(answer_file, 'r')
+    contents = f.readline()
+    contents = f.readline()
+    line = f.readline()
+    good_answers = []
+    for i in range(len(line)):
+        if ord(line[i]) != 10:
+            good_answers.append(ord(line[i]) - 48)
+    f.close()
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
-    retval, img = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
+    retval, img = cv.threshold(img, 180, 255, cv.THRESH_BINARY)
     el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
     img = cv.erode(img, el, iterations=1)
     squares = []
@@ -53,8 +62,7 @@ def find_squares(read_from, save_to, x, y):
     top_left = sum(middles1[0]) / len(middles1[0]), sum(middles1[1]) / len(middles1[1])
     top_right = sum(middles2[0]) / len(middles2[0]), sum(middles2[1]) / len(middles2[1])
 
-    print(top_left, top_right)
-    cv.drawContours(nowe, squares, -1, (0, 255, 0), 3)
+    # cv.drawContours(nowe, squares, -1, (0, 255, 0), 3)
     scale = (top_right[0] - top_left[0]) / 165.0
     answers = [-1 for i in range(len(y))]
     for k in range(len(x)):
@@ -65,11 +73,24 @@ def find_squares(read_from, save_to, x, y):
             cropped = nowe[pos[1]:pos[1] + int(7 * scale), pos[0]: pos[0] + int(7 * scale)]
             avg_color_per_row = np.average(cropped, axis=0)
             avg_colors = np.average(avg_color_per_row, axis=0)
-            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 400:
+            if l < len(good_answers) and good_answers[l] == k:
+                cv.circle(nowe, pos, 4, (0, 255, 0), 3)
+            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 615:
                 cv.circle(nowe, pos, 4, (0, 0, 255), 3)
                 if answers[l] == -1:
                     answers[l] = k
-            #  cv.imshow("cropped", cropped)
-            #  cv.waitKey(1000)
+
+            if l < len(good_answers) and good_answers[l] == k:
+                cv.circle(nowe, pos, 4, (0, 255, 0), 3)
+
+
+    answered = 0
+    f = open(answer_file, 'r')
+    contents = f.readlines()
+    for line in contents:
+        for i in range(len(line) - 1):
+              if line[i] == str(answers[i]):
+                 answered = answered + 1
+    cv.putText(nowe, str(answered) + '/25', (230, 50), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2, cv.LINE_AA)
     cv.imwrite(save_to, nowe)
     return answers

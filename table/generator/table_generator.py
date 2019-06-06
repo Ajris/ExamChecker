@@ -64,14 +64,13 @@ class AnswerSheetGenerator(FPDF):
 
 def generate_table(name, width, height):
     pdf = AnswerSheetGenerator(width, height)
-    pdf.output(name)
+    if name != None:
+        pdf.output(name)
     return pdf.answers_x_pos, pdf.answers_y_pos
 
 def random_answer_table(name, width, height):
     pdf = AnswerSheetGenerator(width, height, True)
     pdf.output(name)
-    # print(pdf.answers_x_pos)
-    # print(pdf.answers_y_pos)
     return pdf.answers_x_pos, pdf.answers_y_pos
 
 

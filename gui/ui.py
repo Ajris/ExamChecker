@@ -1,16 +1,21 @@
+import os
 from tkinter import *
 from tkinter import filedialog
 from tkinter.ttk import *
-from table.generator.table_generator import generate_table
+import sys
+sys.path.insert(0, '/home/maciek/Documents/ExamChecker/table/generator')
+sys.path.insert(0, '/home/maciek/Documents/ExamChecker/table')
+
+from PIL import Image
 
 from gui import pdf_to_jpg
 from table.checker import detect_square
-from PIL import Image
+from table.generator.table_generator import generate_table
 
 questions = []
 question_values = []
 question_nums = []
-
+answered = 0
 
 def clear_without_menu():
     for child in window.winfo_children():
@@ -31,7 +36,18 @@ def generate_function():
 
     spin = Spinbox(window, from_=2, to=6, width=5, textvariable=answers_number, command=update_questions)
     spin.grid(column=1, row=1)
+
+    lbl = Label(window, text="exam file name: ")
+    lbl.grid(column=2, row=0)
     add_radiobuttons(questions_number.get(), answers_number.get())
+    e = Entry(window, textvariable = filname)
+    e.grid(column=3, row=0)
+
+    lbl = Label(window, text="answers file name: ")
+    lbl.grid(column=2, row=1)
+    add_radiobuttons(questions_number.get(), answers_number.get())
+    e2 = Entry(window, textvariable = ans_filname)
+    e2.grid(column=3, row=1)
 
     btn = Button(window, text="Generate pdf", command=generate_pdf)
     btn.grid(column=4, row=100)
@@ -39,6 +55,7 @@ def generate_function():
 
 def check_function():
     global pdf_file
+    global answer_file
     clear_without_menu()
     pdf_file = filedialog.askopenfilename(initialdir="./.data/pdf", title="Select file",
                                           filetypes=(("pdf file", "*.pdf"), ("all files", "*.*")))
@@ -84,31 +101,41 @@ def update_questions():
 
 
 def generate_pdf():
-    generate_table("./.data/pdf/output.pdf", answers_number.get(), questions_number.get())
+    generate_table("./.data/pdf/" + filname.get(), answers_number.get(), questions_number.get())
+    f = open('.data/ans/' + ans_filname.get(), 'w+')
+    f.write(str(answers_number.get()) + "\n")
+    f.write(str(questions_number.get()) + "\n")
+    string = ""
+    for i in question_values:
+        string += str(i.get())
+    f.write(string)
+    print(string)
+
 
 
 def check_answers():
+    global answered
+    head, tail = os.path.split(pdf_file)
     RANDOM_PDF = pdf_file
-    RANDOM_JPG = '.data/jpg/Document1.jpg'
-    RANDOM_OUTPUT = '.data/out/Output-Random.jpg'
-    x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
-    pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
-    answers = detect_square.find_squares(RANDOM_JPG, RANDOM_OUTPUT, x, y)
-    print(len(question_values))
-    if len(answers) == len(question_values):
-        correct = 0
-        for i in range(len(answers)):
-            print(str(answers[i]) + " " + str(question_values[i].get()))
-            if answers[i] == question_values[i].get():
-                correct += 1
-        print(correct)
-    else:
-        print("Wrong number of questions")
+    if not os.path.exists(head[:-4] + '/jpg/' + tail[:-4]):
+        os.mkdir(head[:-4] + '/jpg/' + tail[:-4])
+    if not os.path.exists(head[:-4] + '/jpg/' + tail[:-4] + 'RES/'):
+        os.mkdir(head[:-4] + '/jpg/' + tail[:-4] + 'RES/')
 
-    Image.open(RANDOM_OUTPUT).show()
+    RANDOM_JPG = head[:-4] + '/jpg/' + tail[:-4] + '.jpg'
+    RANDOM_OUTPUT = head[:-4] + '/jpg/' + tail[:-4] + 'RES/'
+    pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
+    x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
+
+    for r, d, fa in os.walk(head[:-4] + '/jpg/' + tail[:-4]):
+        for file in fa:
+            curr = RANDOM_OUTPUT + str(file)
+            print(curr)
+            detect_square.find_squares(head[:-4] + '/jpg/' + tail[:-4] +'/' + str(file), curr, x, y, answer_file)
 
 
 pdf_file = ''
+answer_file = ''
 
 window = Tk()
 window.title("Exam Checker")
@@ -119,6 +146,12 @@ questions_number.set(25)
 
 answers_number = IntVar()
 answers_number.set(4)
+
+filname = StringVar()
+filname.set("exam.pdf")
+
+ans_filname = StringVar()
+ans_filname.set("TMP.txt")
 
 root_menu = Menu(window)
 window.config(menu=root_menu)
