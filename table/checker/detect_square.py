@@ -16,7 +16,6 @@ def find_squares(read_from, save_to, x, y, answer_file):
     for i in range(len(line)):
         if ord(line[i]) != 10:
             good_answers.append(ord(line[i]) - 48)
-    print(good_answers)
     f.close()
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
     retval, img = cv.threshold(img, 180, 255, cv.THRESH_BINARY)
@@ -63,12 +62,9 @@ def find_squares(read_from, save_to, x, y, answer_file):
     top_left = sum(middles1[0]) / len(middles1[0]), sum(middles1[1]) / len(middles1[1])
     top_right = sum(middles2[0]) / len(middles2[0]), sum(middles2[1]) / len(middles2[1])
 
-    cv.drawContours(nowe, squares, -1, (0, 255, 0), 3)
+    # cv.drawContours(nowe, squares, -1, (0, 255, 0), 3)
     scale = (top_right[0] - top_left[0]) / 165.0
     answers = [-1 for i in range(len(y))]
-    print("len")
-    print(len(x))
-    print(len(y))
     for k in range(len(x)):
         i = x[k]
         for l in range(len(y)):
