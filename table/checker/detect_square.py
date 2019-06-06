@@ -87,5 +87,14 @@ def find_squares(read_from, save_to, x, y, answer_file):
             if good_answers[l] == k:
                 cv.circle(nowe, pos, 4, (0, 255, 0), 3)
 
+
+    answered = 0
+    f = open(answer_file, 'r')
+    contents = f.readlines()
+    for line in contents:
+        for i in range(len(line) - 1):
+              if line[i] == str(answers[i]):
+                 answered = answered + 1
+    cv.putText(nowe, str(answered) + '/25', (230, 50), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2, cv.LINE_AA)
     cv.imwrite(save_to, nowe)
     return answers
