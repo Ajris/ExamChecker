@@ -2,8 +2,8 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter.ttk import *
 import sys
-sys.path.insert(0, '/home/charon/Documents/ExamChecker/table/generator')
-sys.path.insert(0, '/home/charon/Documents/ExamChecker/table')
+sys.path.insert(0, '/home/maciek/Documents/ExamChecker/table/generator')
+sys.path.insert(0, '/home/maciek/Documents/ExamChecker/table')
 from table_generator import generate_table
 
 import pdf_to_jpg

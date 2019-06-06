@@ -14,7 +14,7 @@ def find_squares(read_from, save_to, x, y, answer_file):
     line = f.readline()
     good_answers = []
     for i in range(len(line)):
-        if i != '\n':
+        if ord(line[i]) != 10:
             good_answers.append(ord(line[i]) - 48)
     print(good_answers)
     f.close()
