@@ -4,13 +4,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
-data
 # C extensions
 *.so
 .idea
-data/jpg
-data/out
-data/pdf/Generated-Document.pdf
 # Distribution / packaging
 .Python
 build/
