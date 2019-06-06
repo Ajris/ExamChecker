@@ -17,7 +17,6 @@ question_values = []
 question_nums = []
 answered = 0
 
-
 def clear_without_menu():
     for child in window.winfo_children():
         if child.winfo_class() != 'Menu':
@@ -37,7 +36,18 @@ def generate_function():
 
     spin = Spinbox(window, from_=2, to=6, width=5, textvariable=answers_number, command=update_questions)
     spin.grid(column=1, row=1)
+
+    lbl = Label(window, text="exam file name: ")
+    lbl.grid(column=2, row=0)
     add_radiobuttons(questions_number.get(), answers_number.get())
+    e = Entry(window, textvariable = filname)
+    e.grid(column=3, row=0)
+
+    lbl = Label(window, text="answers file name: ")
+    lbl.grid(column=2, row=1)
+    add_radiobuttons(questions_number.get(), answers_number.get())
+    e2 = Entry(window, textvariable = ans_filname)
+    e2.grid(column=3, row=1)
 
     btn = Button(window, text="Generate pdf", command=generate_pdf)
     btn.grid(column=4, row=100)
@@ -91,8 +101,8 @@ def update_questions():
 
 
 def generate_pdf():
-    generate_table("./.data/pdf/output.pdf", answers_number.get(), questions_number.get())
-    f = open('.data/ans/ans.txt', 'w+')
+    generate_table("./.data/pdf/" + filname.get(), answers_number.get(), questions_number.get())
+    f = open('.data/ans/' + ans_filname.get(), 'w+')
     f.write(str(answers_number.get()) + "\n")
     f.write(str(questions_number.get()) + "\n")
     string = ""
@@ -139,6 +149,12 @@ questions_number.set(25)
 
 answers_number = IntVar()
 answers_number.set(4)
+
+filname = StringVar()
+filname.set("exam.pdf")
+
+ans_filname = StringVar()
+ans_filname.set("answers.txt")
 
 root_menu = Menu(window)
 window.config(menu=root_menu)
