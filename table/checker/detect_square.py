@@ -19,7 +19,7 @@ def find_squares(read_from, save_to, x, y, answer_file):
     print(good_answers)
     f.close()
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
-    retval, img = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
+    retval, img = cv.threshold(img, 180, 255, cv.THRESH_BINARY)
     el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
     img = cv.erode(img, el, iterations=1)
     squares = []
