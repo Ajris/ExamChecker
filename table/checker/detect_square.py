@@ -73,14 +73,14 @@ def find_squares(read_from, save_to, x, y, answer_file):
             cropped = nowe[pos[1]:pos[1] + int(7 * scale), pos[0]: pos[0] + int(7 * scale)]
             avg_color_per_row = np.average(cropped, axis=0)
             avg_colors = np.average(avg_color_per_row, axis=0)
-            if good_answers[l] == k:
+            if l < len(good_answers) and good_answers[l] == k:
                 cv.circle(nowe, pos, 4, (0, 255, 0), 3)
             if avg_colors[1] + avg_colors[2] + avg_colors[0] < 615:
                 cv.circle(nowe, pos, 4, (0, 0, 255), 3)
                 if answers[l] == -1:
                     answers[l] = k
 
-            if good_answers[l] == k:
+            if l < len(good_answers) and good_answers[l] == k:
                 cv.circle(nowe, pos, 4, (0, 255, 0), 3)
 
 

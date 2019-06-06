@@ -116,7 +116,6 @@ def generate_pdf():
 def check_answers():
     global answered
     head, tail = os.path.split(pdf_file)
-    print(tail)
     RANDOM_PDF = pdf_file
     if not os.path.exists(head[:-4] + '/jpg/' + tail[:-4]):
         os.mkdir(head[:-4] + '/jpg/' + tail[:-4])
@@ -128,18 +127,11 @@ def check_answers():
     pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
     x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
 
-    i = 0
     for r, d, fa in os.walk(head[:-4] + '/jpg/' + tail[:-4]):
         for file in fa:
             curr = RANDOM_OUTPUT + str(file)
-            answers = detect_square.find_squares(head[:-4] + '/jpg/' + tail[:-4] +'/' + str(file), curr, x, y, answer_file)
-            i = i + 1
-            f = open(answer_file, 'r')
-            contents = f.readlines()
-            for line in contents:
-                for i in range(len(line) - 1):
-                    if line[i] == str(answers[i]):
-                        answered = answered + 1
+            print(curr)
+            detect_square.find_squares(head[:-4] + '/jpg/' + tail[:-4] +'/' + str(file), curr, x, y, answer_file)
 
 
 pdf_file = ''
