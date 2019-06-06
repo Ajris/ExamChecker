@@ -13,8 +13,9 @@ def find_squares(read_from, save_to, x, y, answer_file):
     contents = f.readline()
     line = f.readline()
     good_answers = []
-    for i in range(len(line) - 1):
-        good_answers.append(ord(line[i]) - 48)
+    for i in range(len(line)):
+        if i != '\n':
+            good_answers.append(ord(line[i]) - 48)
     print(good_answers)
     f.close()
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
@@ -80,7 +81,7 @@ def find_squares(read_from, save_to, x, y, answer_file):
             print(str(good_answers[l]) + " " + str(k))
             if good_answers[l] == k:
                 cv.circle(nowe, pos, 4, (0, 255, 0), 3)
-            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 400:
+            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 550:
                 cv.circle(nowe, pos, 4, (0, 0, 255), 3)
                 if answers[l] == -1:
                     answers[l] = k

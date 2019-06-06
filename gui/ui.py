@@ -90,6 +90,15 @@ def update_questions():
 
 def generate_pdf():
     generate_table("./.data/pdf/output.pdf", answers_number.get(), questions_number.get())
+    f = open('.data/ans/ans.txt', 'w+')
+    f.write(str(answers_number.get()) + "\n")
+    f.write(str(questions_number.get()) + "\n")
+    string = ""
+    for i in question_values:
+        string += str(i.get())
+    f.write(string)
+    print(string)
+
 
 
 def check_answers():
