@@ -9,12 +9,17 @@ def angle_cos(p0, p1, p2):
 
 def find_squares(read_from, save_to, x, y, answer_file):
     f = open(answer_file, 'r')
+    contents = f.readline()
+    contents = f.readline()
     line = f.readline()
     good_answers = []
-    for i in range(len(line) - 1):
-        good_answers.append(ord(line[i]) - 48)
+    for i in range(len(line)):
+        if ord(line[i]) != 10:
+            good_answers.append(ord(line[i]) - 48)
+    print(good_answers)
+    f.close()
     img = cv.imread(read_from, cv.IMREAD_GRAYSCALE)
-    retval, img = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
+    retval, img = cv.threshold(img, 180, 255, cv.THRESH_BINARY)
     el = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
     img = cv.erode(img, el, iterations=1)
     squares = []
@@ -61,6 +66,9 @@ def find_squares(read_from, save_to, x, y, answer_file):
     cv.drawContours(nowe, squares, -1, (0, 255, 0), 3)
     scale = (top_right[0] - top_left[0]) / 165.0
     answers = [-1 for i in range(len(y))]
+    print("len")
+    print(len(x))
+    print(len(y))
     for k in range(len(x)):
         i = x[k]
         for l in range(len(y)):
@@ -69,7 +77,9 @@ def find_squares(read_from, save_to, x, y, answer_file):
             cropped = nowe[pos[1]:pos[1] + int(7 * scale), pos[0]: pos[0] + int(7 * scale)]
             avg_color_per_row = np.average(cropped, axis=0)
             avg_colors = np.average(avg_color_per_row, axis=0)
-            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 400:
+            if good_answers[l] == k:
+                cv.circle(nowe, pos, 4, (0, 255, 0), 3)
+            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 615:
                 cv.circle(nowe, pos, 4, (0, 0, 255), 3)
                 if answers[l] == -1:
                     answers[l] = k
