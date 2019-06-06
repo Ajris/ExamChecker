@@ -115,20 +115,24 @@ def generate_pdf():
 
 def check_answers():
     global answered
-    print(pdf_file)
+    head, tail = os.path.split(pdf_file)
+    print(tail)
     RANDOM_PDF = pdf_file
-    RANDOM_JPG = pdf_file[:-4] + '.jpg'
-    RANDOM_OUTPUT = pdf_file[:-4] + 'RES'
+    if not os.path.exists(head[:-4] + '/jpg/' + tail[:-4]):
+        os.mkdir(head[:-4] + '/jpg/' + tail[:-4])
+    if not os.path.exists(head[:-4] + '/jpg/' + tail[:-4] + 'RES/'):
+        os.mkdir(head[:-4] + '/jpg/' + tail[:-4] + 'RES/')
+
+    RANDOM_JPG = head[:-4] + '/jpg/' + tail[:-4] + '.jpg'
+    RANDOM_OUTPUT = head[:-4] + '/jpg/' + tail[:-4] + 'RES/'
     pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
     x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
 
     i = 0
-    for r, d, fa in os.walk(pdf_file[:-4]):
+    for r, d, fa in os.walk(head[:-4] + '/jpg/' + tail[:-4]):
         for file in fa:
-            if not os.path.exists(RANDOM_OUTPUT + '/'):
-                os.mkdir(RANDOM_OUTPUT + '/')
-            curr = RANDOM_OUTPUT + '/' + str(file)
-            answers = detect_square.find_squares(pdf_file[:-4] + '/' + str(file), curr, x, y, answer_file)
+            curr = RANDOM_OUTPUT + str(file)
+            answers = detect_square.find_squares(head[:-4] + '/jpg/' + tail[:-4] +'/' + str(file), curr, x, y, answer_file)
             i = i + 1
             f = open(answer_file, 'r')
             contents = f.readlines()
