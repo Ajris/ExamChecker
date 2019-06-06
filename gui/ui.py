@@ -115,6 +115,7 @@ def generate_pdf():
 
 def check_answers():
     global answered
+    print(pdf_file)
     RANDOM_PDF = pdf_file
     RANDOM_JPG = pdf_file[:-4] + '.jpg'
     RANDOM_OUTPUT = pdf_file[:-4] + 'RES'
@@ -154,7 +155,7 @@ filname = StringVar()
 filname.set("exam.pdf")
 
 ans_filname = StringVar()
-ans_filname.set("answers.txt")
+ans_filname.set("TMP.txt")
 
 root_menu = Menu(window)
 window.config(menu=root_menu)
