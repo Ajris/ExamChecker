@@ -81,7 +81,7 @@ def find_squares(read_from, save_to, x, y, answer_file):
             print(str(good_answers[l]) + " " + str(k))
             if good_answers[l] == k:
                 cv.circle(nowe, pos, 4, (0, 255, 0), 3)
-            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 550:
+            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 615:
                 cv.circle(nowe, pos, 4, (0, 0, 255), 3)
                 if answers[l] == -1:
                     answers[l] = k
