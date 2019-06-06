@@ -1,10 +1,13 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter.ttk import *
-from table.generator.table_generator import generate_table
+import sys
+sys.path.insert(0, '/home/charon/Documents/ExamChecker/table/generator')
+sys.path.insert(0, '/home/charon/Documents/ExamChecker/table')
+from table_generator import generate_table
 
-from gui import pdf_to_jpg
-from table.checker import detect_square
+import pdf_to_jpg
+from checker import detect_square
 from PIL import Image
 
 questions = []
