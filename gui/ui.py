@@ -3,14 +3,14 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter.ttk import *
 import sys
-sys.path.insert(0, '/home/maciek/Documents/ExamChecker/table/generator')
-sys.path.insert(0, '/home/maciek/Documents/ExamChecker/table')
+sys.path.insert(0, '/home/charon/Documents/ExamChecker/table/generator')
+sys.path.insert(0, '/home/charon/Documents/ExamChecker/table')
+from table_generator import generate_table
 
 from PIL import Image
 
-from gui import pdf_to_jpg
-from table.checker import detect_square
-from table.generator.table_generator import generate_table
+import pdf_to_jpg
+from checker import detect_square
 
 questions = []
 question_values = []
@@ -125,7 +125,13 @@ def check_answers():
     RANDOM_JPG = head[:-4] + '/jpg/' + tail[:-4] + '.jpg'
     RANDOM_OUTPUT = head[:-4] + '/jpg/' + tail[:-4] + 'RES/'
     pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
-    x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
+    f = open(answer_file, 'r')
+    contents = f.readline()
+    width = int(contents)
+    contents = f.readline()
+    height = int(contents)
+    x = int(contents)
+    x, y = generate_table(".data/pdf/output.pdf", width, height)
 
     for r, d, fa in os.walk(head[:-4] + '/jpg/' + tail[:-4]):
         for file in fa:
