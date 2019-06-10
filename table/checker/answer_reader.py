@@ -20,8 +20,11 @@ class Answer:
             if self.marked.__contains__(i):
                 res = res + 1
             else:
-                res = res - 1
-        return res
+                return 0
+        if res == len(self.correct) and res == len(self.marked):
+            return 1
+        else:
+            return 0
 
     def correctContains(self, v):
         return self.correct.__contains__(v)

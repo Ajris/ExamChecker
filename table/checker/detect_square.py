@@ -72,20 +72,14 @@ def find_squares(read_from, save_to, x, y, answer_file, pdf):
                 cv.circle(nowe, pos, 4, (0, 255, 0), 3)
             if avg_colors[1] + avg_colors[2] + avg_colors[0] < 605:
                 cv.circle(nowe, pos, 4, (0, 0, 255), 3)
-                if answers[l] == -1:
-                    answers[l] = k
+                good_answers[l].addMarked(k)
 
             if l < len(good_answers) and good_answers[l].correctContains(k):
                 cv.circle(nowe, pos, 4, (0, 255, 0), 3)
 
-    print(answers)
     answered = 0
-    f = open(answer_file, 'r')
-    contents = f.readlines()
-    for line in contents:
-        for i in range(len(line) - 1):
-              if line[i] == str(answers[i]):
-                 answered = answered + 1
+    for ans in good_answers:
+        answered += ans.calcPoints()
     cv.putText(nowe, str(answered) + '/' + str(len(good_answers)), (230, 50), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2, cv.LINE_AA)
     table_generator.gen_result(answered, len(good_answers), pdf)
     cv.imwrite(save_to, nowe)
