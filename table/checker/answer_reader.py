@@ -23,12 +23,15 @@ class Answer:
                 res = res - 1
         return res
 
+    def correctContains(self, v):
+        return self.correct.__contains__(v)
+
     def __str__(self):
         return "CORRECT:" + str(self.correct) + "MARKED:" + str(self.marked)
 
 
-def f1():
-    f = open("/home/ajris/PycharmProjects/examChecker/.data/ans/newans5x16.txt", 'r')
+def convert_answer_file(answer_file):
+    f = open(answer_file, 'r')
     line = f.readlines()
     good_answers = []
     for i in range(2, len(line)):
@@ -37,10 +40,5 @@ def f1():
         for val in values:
             ans.addCorrect(ord(val) - 48)
         good_answers.append(ans)
-    print(good_answers[1])
     f.close()
-    return
-
-
-if __name__ == '__main__':
-    f1()
+    return good_answers
