@@ -3,6 +3,9 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter.ttk import *
 import sys
+
+from fpdf import FPDF
+
 sys.path.insert(0, '/home/maciek/Documents/ExamChecker/table/generator')
 sys.path.insert(0, '/home/maciek/Documents/ExamChecker/table')
 
@@ -39,7 +42,6 @@ def generate_function():
 
     lbl = Label(window, text="exam file name: ")
     lbl.grid(column=2, row=0)
-    add_radiobuttons(questions_number.get(), answers_number.get())
     e = Entry(window, textvariable = filname)
     e.grid(column=3, row=0)
 
@@ -127,11 +129,15 @@ def check_answers():
     pdf_to_jpg.convert(RANDOM_PDF, RANDOM_JPG)
     x, y = generate_table(".data/pdf/output.pdf", answers_number.get(), questions_number.get())
 
+    pdf = FPDF(unit='mm', format='A4')
+
     for r, d, fa in os.walk(head[:-4] + '/jpg/' + tail[:-4]):
         for file in fa:
             curr = RANDOM_OUTPUT + str(file)
             print(curr)
-            detect_square.find_squares(head[:-4] + '/jpg/' + tail[:-4] +'/' + str(file), curr, x, y, answer_file)
+            detect_square.find_squares(head[:-4] + '/jpg/' + tail[:-4] +'/' + str(file), curr, x, y, answer_file, pdf)
+
+    pdf.output("res.pdf")
 
 
 pdf_file = ''

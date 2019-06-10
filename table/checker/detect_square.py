@@ -1,13 +1,15 @@
 import cv2 as cv
 import numpy as np
 
+from table.generator import table_generator
+
 
 def angle_cos(p0, p1, p2):
     d1, d2 = (p0 - p1).astype('float'), (p2 - p1).astype('float')
     return abs(np.dot(d1, d2) / np.sqrt(np.dot(d1, d1) * np.dot(d2, d2)))
 
 
-def find_squares(read_from, save_to, x, y, answer_file):
+def find_squares(read_from, save_to, x, y, answer_file, pdf):
     f = open(answer_file, 'r')
     contents = f.readline()
     contents = f.readline()
@@ -75,7 +77,7 @@ def find_squares(read_from, save_to, x, y, answer_file):
             avg_colors = np.average(avg_color_per_row, axis=0)
             if l < len(good_answers) and good_answers[l] == k:
                 cv.circle(nowe, pos, 4, (0, 255, 0), 3)
-            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 615:
+            if avg_colors[1] + avg_colors[2] + avg_colors[0] < 605:
                 cv.circle(nowe, pos, 4, (0, 0, 255), 3)
                 if answers[l] == -1:
                     answers[l] = k
@@ -91,6 +93,7 @@ def find_squares(read_from, save_to, x, y, answer_file):
         for i in range(len(line) - 1):
               if line[i] == str(answers[i]):
                  answered = answered + 1
-    cv.putText(nowe, str(answered) + '/25', (230, 50), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2, cv.LINE_AA)
+    cv.putText(nowe, str(answered) + '/' + str(len(good_answers)), (230, 50), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2, cv.LINE_AA)
+    table_generator.gen_result(answered, len(good_answers), pdf)
     cv.imwrite(save_to, nowe)
     return answers

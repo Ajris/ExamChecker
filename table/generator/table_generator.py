@@ -74,12 +74,10 @@ def random_answer_table(name, width, height):
     pdf.output(name)
     return pdf.answers_x_pos, pdf.answers_y_pos
 
-def gen_result(points, max_points):
-    pdf = FPDF(unit='mm', format='A4')
+def gen_result(points, max_points, pdf):
     pdf.add_page()
     pdf.set_font('Arial', 'B', 16)
     pdf.text(105, 290, str(points) + '/' + str(max_points))
-    pdf.output("abc.pdf")
 
 
 
