@@ -20,7 +20,6 @@ class AnswerSheetGenerator(FPDF):
         self.height = height
         self.generate_table(width, height, random_answer)
         self.generate_reference_rectangles()
-        self.text(85, 290, "Wynik: ")
 
     def get_x(self, width):
         return (210 - self.box_h_space * (width + 2)) / 2
@@ -77,9 +76,7 @@ def random_answer_table(name, width, height):
 def gen_result(points, max_points, pdf):
     pdf.add_page()
     pdf.set_font('Arial', 'B', 16)
-    pdf.text(105, 290, str(points) + '/' + str(max_points))
-
-
+    pdf.text(89, 290, "Wynik: " + str(points) + '/' + str(max_points))
 
 if __name__ == '__main__':
 #  def random_answer_table(name, width, height):
