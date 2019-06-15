@@ -14,6 +14,7 @@ question_values = []
 question_nums = []
 answered = 0
 
+
 def clear_without_menu():
     for child in window.winfo_children():
         if child.winfo_class() != 'Menu':
@@ -36,13 +37,13 @@ def generate_function():
 
     lbl = Label(window, text="exam file name: ")
     lbl.grid(column=2, row=0)
-    e = Entry(window, textvariable = filname)
+    e = Entry(window, textvariable=filname)
     e.grid(column=3, row=0)
 
     lbl = Label(window, text="answers file name: ")
     lbl.grid(column=2, row=1)
     add_radiobuttons(questions_number.get(), answers_number.get())
-    e2 = Entry(window, textvariable = ans_filname)
+    e2 = Entry(window, textvariable=ans_filname)
     e2.grid(column=3, row=1)
 
     btn = Button(window, text="Generate pdf", command=generate_pdf)
@@ -74,13 +75,13 @@ def add_radiobuttons(question, answers):
     question_nums = []
     for i in range(question):
         questions.append([])
-        v = IntVar()
-        question_values.append(v)
         lb = Label(window, text=str(i))
         lb.grid(column=0, row=i + 3)
         question_nums.append(lb)
         for j in range(answers):
-            rad = Radiobutton(window, text=chr(j + ord('A')), value=j, variable=v)
+            v = IntVar()
+            question_values.append(v)
+            rad = Checkbutton(window, text=chr(j + ord('A')), variable=v)
             rad.grid(column=j + 1, row=i + 3)
             questions[i].append(rad)
 
@@ -102,11 +103,13 @@ def generate_pdf():
     f.write(str(answers_number.get()) + "\n")
     f.write(str(questions_number.get()) + "\n")
     string = ""
-    for i in question_values:
-        string += str(i.get())
+    for i in range(0,len(question_values) - answers_number.get()+1, answers_number.get()):
+        for j in range(answers_number.get()):
+            if question_values[i+j].get() == 1:
+                string += str(j)
+                string += " "
+        string += "\n"
     f.write(string)
-    print(string)
-
 
 
 def check_answers():
@@ -135,7 +138,7 @@ def check_answers():
         for file in fa:
             curr = RANDOM_OUTPUT + str(file)
             print(curr)
-            detect_square.find_squares(head[:-4] + '/jpg/' + tail[:-4] +'/' + str(file), curr, x, y, answer_file, pdf)
+            detect_square.find_squares(head[:-4] + '/jpg/' + tail[:-4] + '/' + str(file), curr, x, y, answer_file, pdf)
 
     pdf.output("res.pdf")
 
@@ -148,7 +151,7 @@ window.title("Exam Checker")
 window.geometry('700x900')
 
 questions_number = IntVar()
-questions_number.set(25)
+questions_number.set(5)
 
 answers_number = IntVar()
 answers_number.set(4)

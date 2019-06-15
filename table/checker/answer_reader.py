@@ -21,8 +21,10 @@ class Answer:
                 res = res + 1
             else:
                 return 0
-        if res == len(self.correct) and res == len(self.marked):
+        if res == len(self.correct) - 1:
             return 1
+        if res == len(self.correct) and res == len(self.marked):
+            return 2
         else:
             return 0
 
